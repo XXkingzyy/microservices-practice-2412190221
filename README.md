@@ -36,6 +36,6 @@
 | Java | OpenJDK 21.0.6 LTS |
 | Maven | 3.9.16 |
 | Git | 2.52.0.windows.1 |
-| Docker | Docker Desktop |
+| Docker | 29.8.0（Docker Desktop） |
 
 > 详细环境检查与概念回答见 [docs/homework/week-01/index.md](docs/homework/week-01/index.md)。

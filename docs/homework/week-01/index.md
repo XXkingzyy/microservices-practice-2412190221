@@ -14,7 +14,7 @@
 | Java | OpenJDK 21.0.6 LTS（Microsoft build） | ✅ 已安装 |
 | Maven | 3.9.16 | ✅ 已安装 |
 | Git | 2.52.0.windows.1 | ✅ 已安装 |
-| Docker | Docker Desktop（Windows） | ✅ 已安装 |
+| Docker | 29.8.0（Docker Desktop，build 88096ef） | ✅ 已安装 |
 
 环境检查截图见 [screenshots/](screenshots/) 目录：
 
@@ -63,4 +63,11 @@ git commit -m "chore: init microservices practice repository"
 git branch -M main
 git remote add origin https://github.com/XXkingzyy/microservices-practice-2412190221.git
 git push -u origin main
+```
+
+实际提交历史（`git log --oneline --graph --decorate`）：
+
+```
+* 0cd3ccc (HEAD -> main, origin/main) chore: add src placeholder to track empty source directory
+* f1105c2 chore: init microservices practice repository
 ```
