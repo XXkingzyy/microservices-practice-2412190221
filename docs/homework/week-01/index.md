@@ -11,10 +11,11 @@
 
 | 工具 | 版本 | 状态 |
 |------|------|------|
-| Java | OpenJDK 21.0.6 LTS（Microsoft build） | ✅ 已安装 |
+| Java | OpenJDK 21.0.6 LTS（Microsoft build 21.0.6+7-LTS） | ✅ 已安装 |
 | Maven | 3.9.16 | ✅ 已安装 |
 | Git | 2.52.0.windows.1 | ✅ 已安装 |
 | Docker | 29.8.0（Docker Desktop，build 88096ef） | ✅ 已安装 |
+| Docker Compose | v5.5.1（Docker Desktop 自带） | ✅ 已安装 |
 
 环境检查截图见 [screenshots/](screenshots/) 目录：
 
@@ -22,6 +23,7 @@
 - [screenshots/02-maven-version.png](screenshots/02-maven-version.png)：Maven 版本
 - [screenshots/03-git-version.png](screenshots/03-git-version.png)：Git 版本
 - [screenshots/04-docker-version.png](screenshots/04-docker-version.png)：Docker 版本
+- [screenshots/07-docker-compose-version.png](screenshots/07-docker-compose-version.png)：Docker Compose 版本
 
 ## 二、概念回答
 
@@ -53,6 +55,8 @@
 
 - [screenshots/05-github-repo.png](screenshots/05-github-repo.png)：GitHub 仓库页面
 - [screenshots/06-git-log.png](screenshots/06-git-log.png)：本地提交记录
+
+> 说明：Docker Desktop 已安装、`docker` 与 `docker compose` 命令可用；WSL2 子系统此前因网络下载失败未完成在线安装，计划在网络恢复后执行 `wsl --install --no-distribution` 完成安装并启动 Docker 引擎。
 
 ## 四、提交记录
 
