@@ -12,27 +12,41 @@
 
 一个简单的订餐系统，核心只有三个业务模块：**用户、餐厅菜单、订单**。从单体应用起步，后续按业务边界拆分为三个独立服务，作为课程实践作业的载体。
 
+## 技术栈
+
+| 类别 | 选型 |
+|------|------|
+| 语言 | Java 25（OpenJDK 25 LTS） |
+| 框架 | Spring Boot 4.0.x（Spring MVC + Spring Boot Actuator） |
+| 构建 | Maven 3.9（项目内置 Maven Wrapper，`./mvnw`） |
+| 配置 | `application.yml`（统一配置入口） |
+| 测试 | JUnit 5 + Spring Boot Test（MockMvc） |
+| 包名 | `com.zjgsu.jzy`（Group / Package name 按课程要求设置） |
+
 ## 运行环境要求
 
 | 工具 | 要求 |
 |------|------|
-| Java | OpenJDK 21（LTS）及以上 |
-| Maven | 3.9 及以上 |
+| Java | OpenJDK 25（LTS） |
+| Maven | 3.9 及以上（也可直接使用项目内置 `./mvnw`） |
 
-## 快速开始
+## 快速开始（在 monolith/ 目录内执行）
 
 ```bash
-# 1. 编译并运行测试
-mvn test
+cd monolith
 
-# 2. 启动应用（两种方式任选）
-mvn spring-boot:run
-# 或先打包再运行：
-mvn package
+# 1. 编译并运行全部测试
+./mvnw test
+
+# 2. 启动应用（开发模式，监听 8080）
+./mvnw spring-boot:run
+
+# 3. 或先打包再运行
+./mvnw package
 java -jar target/food-ordering-0.0.1-SNAPSHOT.jar
 ```
 
-启动后应用监听 `http://localhost:8080`。
+> Windows 下将 `./mvnw` 替换为 `.\mvnw.cmd`。应用默认端口 **8080**（见 `monolith/src/main/resources/application.yml`）。
 
 ## 当前接口
 
@@ -122,7 +136,6 @@ flowchart TD
 ```
 .
 ├── README.md
-├── pom.xml                       # Spring Boot 项目配置（Maven）
 ├── docs/
 │   └── homework/
 │       ├── week-01/              # 开发环境与个人仓库
@@ -132,19 +145,27 @@ flowchart TD
 │       │   ├── index.md
 │       │   └── screenshots/
 │       └── week-03/              # Spring Boot 基础
-│           └── index.md
-└── src/
-    ├── main/java/com/example/foodordering/   # 应用主类与控制器
-    ├── main/resources/                        # 配置文件
-    └── test/java/com/example/foodordering/    # 接口测试
+│           ├── index.md
+│           └── screenshots/
+├── src/                          # 根目录占位（项目代码位于 monolith/）
+│   └── .gitkeep
+└── monolith/                     # Spring Boot 单体应用（后续拆分微服务的起点）
+    ├── pom.xml                   # Maven 项目配置
+    ├── mvnw / mvnw.cmd / .mvn/   # Maven Wrapper
+    └── src/
+        ├── main/
+        │   ├── java/com/zjgsu/jzy/                 # 应用主类
+        │   │   └── controller/GreetingController  # 问候接口
+        │   └── resources/application.yml          # 统一配置
+        └── test/java/com/zjgsu/jzy/               # 测试代码
 ```
 
 ## 环境信息
 
 | 工具 | 版本 |
 |------|------|
-| Java | OpenJDK 21.0.6 LTS |
-| Maven | 3.9.16 |
+| Java | OpenJDK 25 LTS |
+| Maven | 3.9（Maven Wrapper） |
 | Git | 2.52.0.windows.1 |
 | Docker | 29.8.0（Docker Desktop） |
 | Docker Compose | v5.5.1 |

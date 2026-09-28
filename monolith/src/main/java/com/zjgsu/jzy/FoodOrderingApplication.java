@@ -1,4 +1,4 @@
-package com.example.foodordering;
+package com.zjgsu.jzy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

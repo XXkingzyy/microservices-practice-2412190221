@@ -7,18 +7,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>4.0.8</version>
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
+    <groupId>com.zjgsu.jzy</groupId>
     <artifactId>food-ordering</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>food-ordering</name>
     <description>订餐系统 - 微服务课程实践项目（单体阶段）</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -33,7 +33,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- 测试 -->
+        <!-- 测试：JUnit 5 + Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
