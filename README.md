@@ -12,6 +12,45 @@
 
 一个简单的订餐系统，核心只有三个业务模块：**用户、餐厅菜单、订单**。从单体应用起步，后续按业务边界拆分为三个独立服务，作为课程实践作业的载体。
 
+## 运行环境要求
+
+| 工具 | 要求 |
+|------|------|
+| Java | OpenJDK 21（LTS）及以上 |
+| Maven | 3.9 及以上 |
+
+## 快速开始
+
+```bash
+# 1. 编译并运行测试
+mvn test
+
+# 2. 启动应用（两种方式任选）
+mvn spring-boot:run
+# 或先打包再运行：
+mvn package
+java -jar target/food-ordering-0.0.1-SNAPSHOT.jar
+```
+
+启动后应用监听 `http://localhost:8080`。
+
+## 当前接口
+
+| 接口 | 地址 | 说明 |
+|------|------|------|
+| 问候接口 | `GET http://localhost:8080/hello` | 返回欢迎问候语，验证服务可访问 |
+| 健康检查 | `GET http://localhost:8080/actuator/health` | 返回 `{"status":"UP"}`，验证应用运行状态 |
+
+## 尚未实现的业务能力
+
+当前仅完成 Spring Boot 基础骨架与问候/健康检查接口，订餐业务能力**尚未实现**：
+
+- 用户注册、登录与用户信息管理
+- 菜单（菜品）列表、详情与商家维护
+- 创建订单、订单列表与订单状态流转（接单/完成）
+
+上述能力将在后续周次按模块逐步实现。
+
 ## 用户角色
 
 | 角色 | 说明 |
@@ -83,15 +122,21 @@ flowchart TD
 ```
 .
 ├── README.md
+├── pom.xml                       # Spring Boot 项目配置（Maven）
 ├── docs/
 │   └── homework/
-│       ├── week-01/            # 开发环境与个人仓库
+│       ├── week-01/              # 开发环境与个人仓库
 │       │   ├── index.md
 │       │   └── screenshots/
-│       └── week-02/            # Java 基础与项目规划
-│           ├── index.md
-│           └── screenshots/
-└── src/                        # 项目源码（后续周次逐步填充）
+│       ├── week-02/              # Java 基础与项目规划
+│       │   ├── index.md
+│       │   └── screenshots/
+│       └── week-03/              # Spring Boot 基础
+│           └── index.md
+└── src/
+    ├── main/java/com/example/foodordering/   # 应用主类与控制器
+    ├── main/resources/                        # 配置文件
+    └── test/java/com/example/foodordering/    # 接口测试
 ```
 
 ## 环境信息
