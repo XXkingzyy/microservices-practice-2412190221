@@ -1,6 +1,14 @@
 spring:
   application:
     name: food-ordering
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/course}
+    username: ${DB_USER:course}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
 
 server:
   port: 8080
