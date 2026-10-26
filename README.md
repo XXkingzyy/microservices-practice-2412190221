@@ -204,11 +204,37 @@ curl http://localhost:8080/api/food/orders
 
 > 数据持久化验证：创建数据后执行 `docker compose down`（不带 `-v`）再 `docker compose up -d`，重新查询同一条记录，确认 id 与关键字段不变。
 
+## 第 06 周：微服务拆分
+
+在保留 `monolith/` 单体版本的基础上，将订餐系统按业务边界拆分为三个微服务，设计文档见 [docs/microservices-design.md](docs/microservices-design.md)，本周记录见 [docs/homework/week-06/](docs/homework/week-06/)。
+
+### 三个微服务
+
+| 服务 | 端口 | 职责 | 独立数据库/账号 | 数据表 |
+|---|---|---|---|---|
+| `services/user-service` | 8081 | 顾客注册、查询；为下单提供顾客校验 | `userdb` / `user` | `customers` |
+| `services/menu-service` | 8082 | 菜品新增、查询；为下单提供菜品校验 | `menudb` / `menu` | `dishes` |
+| `services/order-service` | 8083 | 订单创建与状态流转；下单前跨服务校验顾客+菜品 | `orderdb` / `order_user` | `food_orders`、`food_order_items` |
+
+- 跨服务调用：`order-service` 通过 RestTemplate 下单前调用 `GET /api/customers/{id}`（user-service）、`GET /api/dishes/{id}`（menu-service），校验失败返回 404/409/503 且不写入本地数据；RestTemplate 配置连接超时 2s、读取超时 3s。
+- 服务地址可被环境变量覆盖（`USER_SERVICE_URL` / `MENU_SERVICE_URL`），Compose 内以服务名互联。
+- 数据边界：订单只保存 `customerId` + 姓名快照、`dishId` + 名称/单价快照，不建跨库外键。
+
+### 启动与验证（仓库根目录）
+
+```bash
+docker compose up -d            # 一键启动 mysql + 三个微服务
+docker compose ps               # 全部 running
+bash scripts/smoke-test.sh      # 健康检查 + 跨服务下单成功 + 404/409/503 失败场景
+```
+
 ## 已实现的业务能力
 
-- ✅ 订餐：菜品创建与查询、下单（含菜品存在/可售校验、总价后端累加）、订单状态流转（确认/完成/取消）
+- ✅ 订餐（单体 + 微服务）：菜品创建与查询、下单（含菜品存在/可售校验、总价后端累加）、订单状态流转（确认/完成/取消）
+- ✅ 微服务拆分（第 06 周大作业）：user-service / menu-service / order-service，跨服务校验 + 独立数据库
 - ✅ 选课（第 04 周课内实践）：课程/学生/选课记录管理，含重复选课、满员等业务规则
-- ⏳ 用户注册登录与用户信息管理（后续周次实现）
+- ✅ 用户（顾客）注册与查询（第 06 周，user-service）
+- ⏳ 登录鉴权（后续周次实现）
 
 ## 用户角色
 
@@ -256,6 +282,7 @@ flowchart TD
 | 阶段一 | 单体应用，先跑通用户-菜单-订单闭环 |
 | 阶段二 | 拆分为用户服务、菜单服务、订单服务三个微服务 |
 | 阶段三 | Docker 容器化部署 |
+| 阶段四 | 微服务编排与跨服务治理（当前） |
 
 > 先做单体降低复杂度，跑通业务后再按业务边界拆分，风险可控。
 
@@ -281,24 +308,32 @@ flowchart TD
 ```
 .
 ├── README.md
-├── compose.yaml                 # Docker Compose 编排（app + mysql，第 05 周）
+├── compose.yaml                 # Docker Compose 编排（mysql + 三个微服务，第 06 周）
 ├── .env.example                 # 环境变量模板（复制为 .env，勿提交真实密码）
+├── db/
+│   └── init.sql                 # 首次启动创建三个独立数据库与账号（第 06 周）
+├── scripts/
+│   └── smoke-test.sh            # 健康检查 + 跨服务下单 + 失败场景验证（第 06 周）
 ├── docs/
 │   ├── database.md                # 数据库设计文档（订餐系统）
 │   ├── project-proposal.md        # 课程项目选题（订餐系统）
+│   ├── microservices-design.md    # 微服务拆分设计（第 06 周）
 │   └── homework/
 │       ├── week-01/              # 开发环境与个人仓库
 │       ├── week-02/              # Java 基础与项目规划
 │       ├── week-03/              # Spring Boot 基础
 │       ├── week-04/              # 单体应用与数据库持久化（大作业）
-│       │   ├── index.md
-│       │   └── screenshots/
-│       └── week-05/              # Docker 容器化（大作业）
+│       ├── week-05/              # Docker 容器化（大作业）
+│       └── week-06/              # 微服务拆分（大作业）
 │           ├── index.md
 │           └── screenshots/
-├── src/                          # 根目录占位（项目代码位于 monolith/）
+├── src/                          # 根目录占位（项目代码位于 monolith/ 与 services/）
 │   └── .gitkeep
-└── monolith/                     # Spring Boot 单体应用（后续拆分微服务的起点）
+├── services/                     # 微服务（第 06 周）
+│   ├── user-service/             # 8081 顾客（customers，userdb）
+│   ├── menu-service/             # 8082 菜品（dishes，menudb）
+│   └── order-service/            # 8083 订单 + 跨服务校验（orderdb）
+└── monolith/                     # Spring Boot 单体应用（第 04~05 周，拆分起点）
     ├── pom.xml                   # Maven 项目配置
     ├── Dockerfile                # 多阶段构建（第 05 周）
     ├── .dockerignore             # 构建上下文忽略规则（第 05 周）
