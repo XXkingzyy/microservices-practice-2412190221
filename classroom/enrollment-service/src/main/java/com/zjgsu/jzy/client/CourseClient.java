@@ -18,7 +18,9 @@ public class CourseClient {
  public Object get(String service,String path) { return call(service,path,false); }
  public void post(String service,String path) { call(service,path,true); }
  private Object call(String service,String path,boolean post) {
-  var instances=discovery.getInstances(service);
+  java.util.List<org.springframework.cloud.client.ServiceInstance> instances;
+  try { instances=discovery.getInstances(service); }
+  catch (RuntimeException e) { throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"服务发现失败: "+service); }
   if(instances.isEmpty()) throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"无实例: "+service);
   String url=instances.getFirst().getUri()+path;
   org.slf4j.LoggerFactory.getLogger(getClass()).info("Discovery {} -> {}",service,url);
