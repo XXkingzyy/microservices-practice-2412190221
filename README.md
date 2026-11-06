@@ -1,3 +1,35 @@
+> 第 07 周入口：[实施与验证说明](docs/homework/week-07/index.md)。当前默认 Compose 为 Nacos + MySQL + 三个订餐服务；下文历史周次的启动说明请按对应记录阅读。
+
+## 第 07 周启动与测试
+
+1. `cp .env.example .env`，填写本地随机 Token、identity 与管理员密码，勿提交 `.env`。
+2. `docker compose up -d nacos mysql`，访问 http://localhost:18080/ 完成管理员密码初始化。
+3. `docker compose up -d --build user-service menu-service order-service`。
+4. 在 public / PERSONAL_GROUP 查看 user-service、menu-service、order-service 三个实例。8848 是服务端口，9848 是 SDK gRPC 端口，18080 是控制台。
+5. `bash scripts/smoke-test.sh`，再执行 `python scripts/verify-business.py --outage`。后者会临时停止并恢复 menu-service。
+
+各服务测试分别运行：
+
+```bash
+cd services/user-service && mvn test
+cd services/menu-service && mvn test
+cd services/order-service && mvn test
+```
+
+上述命令分别从仓库根目录选一行执行。测试不连接真实 MySQL 或 Nacos，使用 H2 与 Mockito/MockRestServiceServer。要求 Java 25、Maven 3.9+；Windows 也可在服务目录使用原单体 Maven Wrapper 的绝对路径运行。
+
+课内选课三个服务位于 `classroom/`，使用同一根 Compose 的 `classroom` profile，端口 8091–8093，分组 COURSE_GROUP，独立 H2 文件库：
+
+```bash
+docker compose --profile classroom up -d --build student-service course-service enrollment-service
+```
+
+持久数据保存在命名卷，`docker compose down` 保留数据；不要用 `down -v` 清除已有作业数据。每次创建业务操作前重新查询 DiscoveryClient，不将 Compose DNS 固定地址冒充 Nacos 发现。
+
+版本依据：[Alibaba 官方兼容说明](https://sca.aliyun.com/docs/2025.x/overview/version-explain/)，Nacos 部署参考 [3.2 Docker 快速开始](https://nacos-group.github.io/en/docs/v3.2/quickstart/quick-start-docker/)。
+
+---
+
 # microservices-practice-2412190221
 
 《微服务开发与实践》课程个人练习仓库。**项目主题：订餐系统** —— 以"用户-菜单-订单"的点餐核心链路为载体，按课程进度完成需求分析、单体实现、微服务拆分、测试与部署。

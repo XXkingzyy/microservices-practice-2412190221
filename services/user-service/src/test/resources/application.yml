@@ -1,4 +1,11 @@
 spring:
+  cloud:
+    discovery:
+      enabled: false
+    nacos:
+      discovery:
+        enabled: false
+        register-enabled: false
   datasource:
     url: jdbc:h2:mem:userdb;DB_CLOSE_DELAY=-1
     username: sa

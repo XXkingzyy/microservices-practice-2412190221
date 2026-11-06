@@ -1,0 +1,25 @@
+server:
+  port: 8091
+spring:
+  application:
+    name: student-service
+  datasource:
+    url: jdbc:h2:file:./data/student-service
+    username: sa
+    password: ${CLASSROOM_DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:}
+        group: COURSE_GROUP
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

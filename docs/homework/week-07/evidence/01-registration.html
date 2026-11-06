@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><style>body{font:18px Arial,"Microsoft YaHei",sans-serif;margin:36px;color:#172c3e;background:#f5f8fb}h1{font-size:28px}h2{font-size:22px}pre{font:15px Consolas,monospace;white-space:pre-wrap;word-break:break-all;background:white;border:1px solid #ced7e2;border-radius:8px;padding:18px;line-height:1.45}table{border-collapse:collapse;background:white;width:100%}td,th{border:1px solid #ccd6df;padding:10px;text-align:left}small{color:#53677c}</style><h1>Nacos 3.2.4 注册结果</h1><small>2026-11-06 Asia/Shanghai · 本地真实运行证据；API/日志记录，不是模拟控制台</small><h2>控制台 localhost:18080 · 服务端 8848 · gRPC 9848</h2><p>数据来源：鉴权后的 GET /nacos/v3/admin/ns/instance/list，code=0。</p><table><tr><th>分组@@服务名</th><th>实际 IP</th><th>端口</th><th>healthy</th><th>ephemeral</th></tr><tr><td>PERSONAL_GROUP@@user-service</td><td>172.18.0.9</td><td>8081</td><td>True</td><td>True</td></tr><tr><td>PERSONAL_GROUP@@menu-service</td><td>172.18.0.7</td><td>8082</td><td>True</td><td>True</td></tr><tr><td>PERSONAL_GROUP@@order-service</td><td>172.18.0.8</td><td>8083</td><td>True</td><td>True</td></tr><tr><td>COURSE_GROUP@@student-service</td><td>172.18.0.6</td><td>8091</td><td>True</td><td>True</td></tr><tr><td>COURSE_GROUP@@course-service</td><td>172.18.0.5</td><td>8092</td><td>True</td><td>True</td></tr><tr><td>COURSE_GROUP@@enrollment-service</td><td>172.18.0.4</td><td>8093</td><td>True</td><td>True</td></tr></table><pre>{
+  &quot;code&quot;: 0,
+  &quot;message&quot;: &quot;success&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;instanceId&quot;: &quot;172.18.0.7#8082##PERSONAL_GROUP@@menu-service&quot;,
+      &quot;ip&quot;: &quot;172.18.0.7&quot;,
+      &quot;port&quot;: 8082,
+      &quot;weight&quot;: 1.0,
+      &quot;healthy&quot;: true,
+      &quot;enabled&quot;: true,
+      &quot;ephemeral&quot;: true,
+      &quot;clusterName&quot;: &quot;DEFAULT&quot;,
+      &quot;serviceName&quot;: &quot;PERSONAL_GROUP@@menu-service&quot;,
+      &quot;metadata&quot;: {
+        &quot;preserved.register.source&quot;: &quot;SPRING_CLOUD&quot;
+      },
+      &quot;instanceHeartBeatInterval&quot;: 5000,
+      &quot;instanceHeartBeatTimeOut&quot;: 15000,
+      &quot;ipDeleteTimeout&quot;: 30000
+    }
+  ]
+}
+</pre>

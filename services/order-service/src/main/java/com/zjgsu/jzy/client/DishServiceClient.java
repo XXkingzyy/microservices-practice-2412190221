@@ -3,7 +3,6 @@ package com.zjgsu.jzy.client;
 import com.zjgsu.jzy.dto.DishResponse;
 import com.zjgsu.jzy.exception.NotFoundException;
 import com.zjgsu.jzy.exception.ServiceUnavailableException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -19,25 +18,29 @@ import org.springframework.web.client.RestTemplate;
 public class DishServiceClient {
 
     private final RestTemplate restTemplate;
-    private final String baseUrl;
+    private final ServiceAddressResolver resolver;
 
     public DishServiceClient(RestTemplate restTemplate,
-                             @Value("${service.menu-service.url}") String baseUrl) {
+                             ServiceAddressResolver resolver) {
         this.restTemplate = restTemplate;
-        this.baseUrl = baseUrl;
+        this.resolver = resolver;
     }
 
     public DishResponse getDish(String dishId) {
+        String baseUrl = resolver.resolve("menu-service").toString();
         String url = baseUrl + "/api/dishes/" + dishId;
         try {
             ResponseEntity<DishResponse> resp =
                     restTemplate.getForEntity(url, DishResponse.class);
+            if (resp.getBody() == null) throw new ServiceUnavailableException("依赖服务返回空响应");
             return resp.getBody();
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new NotFoundException("菜品不存在: " + dishId);
             }
             throw new ServiceUnavailableException("菜单服务调用失败，状态码 " + e.getStatusCode().value() + ": " + url);
+        } catch (org.springframework.web.client.HttpServerErrorException e) {
+            throw new ServiceUnavailableException("依赖服务返回服务器错误");
         } catch (ResourceAccessException e) {
             throw new ServiceUnavailableException("无法连接菜单服务: " + baseUrl);
         }

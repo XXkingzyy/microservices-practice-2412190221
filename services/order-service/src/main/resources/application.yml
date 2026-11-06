@@ -1,6 +1,14 @@
 spring:
   application:
     name: order-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:PERSONAL_GROUP}
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/orderdb}
     username: ${DB_USER:order_user}
@@ -13,12 +21,7 @@ spring:
 server:
   port: 8083
 
-# 跨服务调用地址：写在配置文件中，可通过环境变量覆盖（Compose 中注入服务名地址）
 service:
-  user-service:
-    url: ${USER_SERVICE_URL:http://localhost:8081}
-  menu-service:
-    url: ${MENU_SERVICE_URL:http://localhost:8082}
   timeout:
     connect-ms: ${SERVICE_CONNECT_TIMEOUT_MS:2000}
     read-ms: ${SERVICE_READ_TIMEOUT_MS:3000}

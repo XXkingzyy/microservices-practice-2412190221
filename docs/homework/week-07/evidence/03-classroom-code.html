@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><style>body{font:18px Arial,"Microsoft YaHei",sans-serif;margin:36px;color:#172c3e;background:#f5f8fb}h1{font-size:28px}h2{font-size:22px}pre{font:15px Consolas,monospace;white-space:pre-wrap;word-break:break-all;background:white;border:1px solid #ced7e2;border-radius:8px;padding:18px;line-height:1.45}table{border-collapse:collapse;background:white;width:100%}td,th{border:1px solid #ccd6df;padding:10px;text-align:left}small{color:#53677c}</style><h1>课内实践：DiscoveryClient 寻址与 HTTP 调用</h1><small>2026-11-06 Asia/Shanghai · 本地真实运行证据；API/日志记录，不是模拟控制台</small><p>classroom/enrollment-service/src/main/java/com/zjgsu/jzy/client/CourseClient.java</p><pre>package com.zjgsu.jzy.client;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+@Component
+public class CourseClient {
+ private final DiscoveryClient discovery;
+ private final RestTemplate http;
+ public CourseClient(DiscoveryClient discovery) {
+  this.discovery=discovery;
+  var factory=new org.springframework.http.client.SimpleClientHttpRequestFactory();
+  factory.setConnectTimeout(java.time.Duration.ofSeconds(2));
+  factory.setReadTimeout(java.time.Duration.ofSeconds(3));
+  http=new RestTemplate(factory);
+ }
+ public Object get(String service,String path) { return call(service,path,false); }
+ public void post(String service,String path) { call(service,path,true); }
+ private Object call(String service,String path,boolean post) {
+  var instances=discovery.getInstances(service);
+  if(instances.isEmpty()) throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,&quot;无实例: &quot;+service);
+  String url=instances.getFirst().getUri()+path;
+  org.slf4j.LoggerFactory.getLogger(getClass()).info(&quot;Discovery {} -&gt; {}&quot;,service,url);
+  try { return post?http.postForObject(url,null,Object.class):http.getForObject(url,Object.class); }
+  catch(HttpClientErrorException e) { throw new ResponseStatusException(e.getStatusCode(),&quot;依赖拒绝请求&quot;); }
+  catch(RestClientException e) { throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,&quot;依赖不可用&quot;); }
+ }
+}
+</pre>

@@ -1,3 +1,5 @@
+> 2026-11-06 补交核对：评分反馈指出 GitHub 缺少本周成果。本次从本机原工程恢复 services/、db/init.sql、拆分文档和 screenshots/，并继续在原服务完成第 7 周。下文为历史第 6 周记录；当前调用实现已升级为 Nacos 发现，当前结果以 week-07/verification.md 为准。历史测试数量与截图不作为本次运行断言。
+
 # Week 06 大作业：微服务拆分
 
 - **项目主题**：订餐系统（Food Ordering System）
@@ -180,4 +182,4 @@ bash scripts/smoke-test.sh
 
 ## 课内实践说明
 
-第 06 周课内实践（选课系统单体中拆出独立服务 `course-service`，座位号 **40**）：独立 Spring Boot 项目，H2 内存库（`MODE=MySQL`）自包含，端口 8090，`POST /api/courses` 创建课程（含重复 code 409 校验）、`GET /api/courses` 查询。运行截图见 `screenshots/`：`09-course-run.png`（容器启动 + 健康检查 + 创建/查询课程）、`10-course-ps.png`（`docker ps`）。按课堂要求直接提交至作业系统。
+第 06 周课内实践（选课系统单体中拆出独立服务 `course-service`，座位号 **39**（以已提交作业页面为准））：独立 Spring Boot 项目，H2 内存库（`MODE=MySQL`）自包含，端口 8090，`POST /api/courses` 创建课程（含重复 code 409 校验）、`GET /api/courses` 查询。运行截图见 `screenshots/`：`09-course-run.png`（容器启动 + 健康检查 + 创建/查询课程）、`10-course-ps.png`（`docker ps`）。按课堂要求直接提交至作业系统。

@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><style>body{font:18px Arial,"Microsoft YaHei",sans-serif;margin:36px;color:#172c3e;background:#f5f8fb}h1{font-size:28px}h2{font-size:22px}pre{font:15px Consolas,monospace;white-space:pre-wrap;word-break:break-all;background:white;border:1px solid #ced7e2;border-radius:8px;padding:18px;line-height:1.45}table{border-collapse:collapse;background:white;width:100%}td,th{border:1px solid #ccd6df;padding:10px;text-align:left}small{color:#53677c}</style><h1>离线边界测试与运行环境健康检查</h1><small>2026-11-06 Asia/Shanghai · 本地真实运行证据；API/日志记录，不是模拟控制台</small><pre>user-service / com.zjgsu.jzy.UserServiceApiTest: tests=2, failures=0, errors=0
+menu-service / com.zjgsu.jzy.MenuServiceApiTest: tests=2, failures=0, errors=0
+order-service / com.zjgsu.jzy.DiscoveredHttpClientTest: tests=4, failures=0, errors=0
+order-service / com.zjgsu.jzy.OrderServiceTest: tests=4, failures=0, errors=0
+order-service / com.zjgsu.jzy.ServiceAddressResolverTest: tests=2, failures=0, errors=0</pre><pre>[PASS] nacos http://localhost:18080/
+[PASS] user-service http://localhost:8081/actuator/health
+[PASS] menu-service http://localhost:8082/actuator/health
+[PASS] order-service http://localhost:8083/actuator/health
+Health checks passed. Run scripts/verify-business.py for business and outage checks.
+</pre><p>负向验证：NACOS_CONSOLE_URL=http://127.0.0.1:1，curl 连接失败，脚本退出码 7。</p>

@@ -90,3 +90,7 @@ scripts/smoke-test.sh    # 健康检查 + 跨服务流程 + 失败场景验证
 docker compose up -d --build   # 一键启动 mysql + 三个微服务
 bash scripts/smoke-test.sh     # 健康检查 + 跨服务下单成功 + 失败场景
 ```
+
+## 第 07 周演进
+
+保留上述业务边界与数据归属。order-service 删除固定 service.*.url 配置，每次校验通过 DiscoveryClient 寻址 user-service/menu-service 后发起 HTTP 调用。Nacos 地址及鉴权从 NACOS_SERVER_ADDR、NACOS_USERNAME、NACOS_PASSWORD、NACOS_NAMESPACE 读取，个人分组 PERSONAL_GROUP。连接和读取超时保持 2s/3s。空实例为 503。控制台 18080、服务 8848、SDK 9848。上述第 6 周固定地址说明属于历史设计。

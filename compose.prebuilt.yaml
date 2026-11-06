@@ -1,0 +1,25 @@
+services:
+  user-service:
+    build:
+      context: ./services/user-service
+      dockerfile: Dockerfile.runtime
+  menu-service:
+    build:
+      context: ./services/menu-service
+      dockerfile: Dockerfile.runtime
+  order-service:
+    build:
+      context: ./services/order-service
+      dockerfile: Dockerfile.runtime
+  student-service:
+    build:
+      context: ./classroom/student-service
+      dockerfile: Dockerfile.runtime
+  course-service:
+    build:
+      context: ./classroom/course-service
+      dockerfile: Dockerfile.runtime
+  enrollment-service:
+    build:
+      context: ./classroom/enrollment-service
+      dockerfile: Dockerfile.runtime
